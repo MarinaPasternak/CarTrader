@@ -6,7 +6,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    setHead() {
+      useHead({
+        title: "CarTrader",
+      });
+    },
+  },
+  created() {
+    this.setHead();
+  },
+};
 </script>
 
 <style scoped></style>
