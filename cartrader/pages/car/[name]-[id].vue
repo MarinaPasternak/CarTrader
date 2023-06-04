@@ -1,20 +1,32 @@
 <template>
   <div>
-    <nav-bar></nav-bar>
-    <div
-      class="mx-auto mt-4 max-w-7xl space-y-4 px-4 xs:px-8 sm:px-10 lg:px-16 pb-16 w-3/5"
-    >
-      <CarDetailHero></CarDetailHero>
-      <CarDetailAttributes></CarDetailAttributes>
-      <CarDetailContact></CarDetailContact>
-    </div>
+    <CarDetailHero></CarDetailHero>
+    <CarDetailAttributes></CarDetailAttributes>
+    <CarDetailContact></CarDetailContact>
   </div>
 </template>
 
 <script>
 import NavBar from "../../components/NavBar.vue";
+import { useUtilities } from "~~/composables/useUtilities";
 export default {
   components: { NavBar },
+  methods: {
+    setHead() {
+      const { capitalizeFirstLetter } = useUtilities();
+
+      useHead({
+        title: `${capitalizeFirstLetter(this.$route.params.name)}`,
+      });
+
+      definePageMeta({
+        layout: "custom",
+      });
+    },
+  },
+  created() {
+    this.setHead();
+  },
 };
 </script>
 

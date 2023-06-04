@@ -1,31 +1,30 @@
 <template>
   <div>
-    <NavBar></NavBar>
-    <div
-      class="mx-auto mt-4 max-w-7xl space-y-4 px-4 xs:px-8 sm:px-10 lg:px-16 pb-16 w-3/5"
-    >
-      <div class="mt-32 flex">
-        <CarSideBar></CarSideBar>
-        <NuxtPage></NuxtPage>
-      </div>
+    <div class="mt-32 flex">
+      <CarSideBar></CarSideBar>
+      <NuxtPage></NuxtPage>
     </div>
   </div>
 </template>
 
 <script>
+import { useUtilities } from "~~/composables/useUtilities";
 export default {
   methods: {
     setHead() {
+      const { capitalizeFirstLetter } = useUtilities();
+
       useHead({
         title: `${
           this.$route.params.make
-            ? this.capitalizeFirstLetter(this.$route.params.make)
+            ? capitalizeFirstLetter(this.$route.params.make)
             : "Cars"
-        } in ${this.capitalizeFirstLetter(this.$route.params.city)}`,
+        } in ${capitalizeFirstLetter(this.$route.params.city)}`,
       });
-    },
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
+
+      definePageMeta({
+        layout: "custom",
+      });
     },
   },
   created() {
