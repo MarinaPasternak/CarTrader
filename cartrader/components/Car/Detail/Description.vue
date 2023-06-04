@@ -2,17 +2,16 @@
   <div>
     <div class="mt-5">
       <p class="mb-10">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Exercitationem
-        consequuntur, et saepe sequi, ipsum quisquam iste autem quas vel aperiam
-        laboriosam dolorum vero tempore placeat, asperiores alias magni. Nulla,
-        dolores.
+        {{ description }}
       </p>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["description"],
+};
 </script>
 
 <style scoped></style>

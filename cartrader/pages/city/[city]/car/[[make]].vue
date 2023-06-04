@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CarCard></CarCard>
+    <CarCards></CarCards>
   </div>
 </template>
 
