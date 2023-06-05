@@ -1,8 +1,22 @@
 <template>
   <div>
     <div class="mt-32 flex">
-      <CarSideBar></CarSideBar>
-      <NuxtPage></NuxtPage>
+      <NuxtErrorBoundary>
+        <CarSideBar></CarSideBar>
+        <NuxtPage></NuxtPage>
+        <template #error="{ error }">
+          <div class="text-center mx-auto flex flex-col items-center">
+            <h1 class="text-7xl text-blue-400">Sorry, something went wrong</h1>
+            <code class="mt-7 text-4xl">{{ error }}</code>
+            <button
+              class="w-fit rounded mt-7 test-2xl bg-blue-400 px-7 py-4 text-white"
+              @click="error.value = null"
+            >
+              Go Back
+            </button>
+          </div>
+        </template>
+      </NuxtErrorBoundary>
     </div>
   </div>
 </template>

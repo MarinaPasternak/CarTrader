@@ -22,6 +22,10 @@ export default {
         return car.id === carID;
       });
 
+      if (!foundedCar) {
+        this.throwError();
+      }
+
       return foundedCar;
     },
   },
@@ -35,6 +39,12 @@ export default {
 
       definePageMeta({
         layout: "custom",
+      });
+    },
+    throwError() {
+      throw createError({
+        statusCode: 404,
+        message: `Car with id of ${this.$route.params.id} doesn't exist`,
       });
     },
   },
