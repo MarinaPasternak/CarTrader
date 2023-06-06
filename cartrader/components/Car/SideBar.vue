@@ -1,9 +1,12 @@
 <template>
   <div>
     <div class="shadow border w-64 mr-10 z-30 h-[190px]">
+      <!--Location-->
       <div class="p-5 flex justify-between relative cursor-pointer border-b">
-        <h3 @click="updateModal('location')">Location</h3>
-        <h3 class="text-blue-400 capitalize">{{ $route.params.city }}</h3>
+        <h3>Location</h3>
+        <h3 class="text-blue-400 capitalize" @click="updateModal('location')">
+          {{ $route.params.city }}
+        </h3>
         <div
           class="absolute border shadow left-56 p-5 top-1 -m-1 bg-white z-10"
           v-if="modal.location"
@@ -17,21 +20,40 @@
           </button>
         </div>
       </div>
-
+      <!--Location-->
+      <!--Make-->
       <div class="p-5 flex justify-between relative cursor-pointer border-b">
         <h3>Make</h3>
-        <h3 class="text-blue-400 capitalize">Toyota</h3>
+        <h3 class="text-blue-400 capitalize" @click="updateModal('make')">
+          {{ $route.params.make || "any" }}
+        </h3>
+        <div
+          class="absolute border shadow left-56 p-5 top-1 -m-1 bg-white w-[600px] flex justify-between flex-wrap z-30"
+          v-if="modal.make"
+        >
+          <h4
+            v-for="make in allMakes"
+            :key="make"
+            class="w-1/3"
+            @click="onChangeMake(make)"
+          >
+            {{ make }}
+          </h4>
+        </div>
       </div>
-
+      <!--Make-->
+      <!--Price-->
       <div class="p-5 flex justify-between relative cursor-pointer border-b">
         <h3>Price</h3>
         <h3 class="text-blue-400 capitalize"></h3>
       </div>
+      <!--Price-->
     </div>
   </div>
 </template>
 
 <script>
+import { useMakes } from "~~/composables/useMake";
 export default {
   data() {
     return {
@@ -42,6 +64,12 @@ export default {
       },
       city: "",
     };
+  },
+  computed: {
+    allMakes() {
+      const { makes } = useMakes();
+      return makes;
+    },
   },
   methods: {
     onChangeLocation() {
@@ -59,6 +87,10 @@ export default {
       }
 
       this.city = "";
+    },
+    onChangeMake(make) {
+      this.updateModal("make");
+      navigateTo(`/city/${this.$route.params.city}/car/${make}`);
     },
     updateModal(key) {
       this.modal[key] = !this.modal[key];
