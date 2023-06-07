@@ -45,7 +45,32 @@
       <!--Price-->
       <div class="p-5 flex justify-between relative cursor-pointer border-b">
         <h3>Price</h3>
-        <h3 class="text-blue-400 capitalize"></h3>
+        <h3 class="text-blue-400 capitalize" @click="updateModal('price')">
+          {{ priceRangeText }}
+        </h3>
+        <div
+          class="absolute border shadow left-56 p-5 top-1 -m-1 bg-white w-[600px] flex justify-between flex-wrap z-30"
+          v-if="modal.price"
+        >
+          <input
+            class="border p-1 rounded"
+            type="number"
+            placeholder="Min"
+            v-model="priceRange.min"
+          />
+          <input
+            class="border p-1 rounded"
+            type="number"
+            placeholder="Max"
+            v-model="priceRange.max"
+          />
+          <button
+            class="bg-blue-400 w-full mt-2 rounded text-white p-1"
+            @click="onChangePrice"
+          >
+            Apply
+          </button>
+        </div>
       </div>
       <!--Price-->
     </div>
@@ -62,6 +87,10 @@ export default {
         location: false,
         price: false,
       },
+      priceRange: {
+        min: null,
+        max: null,
+      },
       city: "",
     };
   },
@@ -69,6 +98,20 @@ export default {
     allMakes() {
       const { makes } = useMakes();
       return makes;
+    },
+    priceRangeText() {
+      const minPrice = parseInt(this.$route.query.minPrice);
+      const maxPrice = parseInt(this.$route.query.maxPrice);
+
+      if (!minPrice && !maxPrice) {
+        return "any";
+      } else if (!minPrice && maxPrice) {
+        return `< $${maxPrice}`;
+      } else if (minPrice && !maxPrice) {
+        return `$${minPrice} >`;
+      } else {
+        return `$${minPrice}-$${maxPrice}`;
+      }
     },
   },
   methods: {
@@ -91,6 +134,22 @@ export default {
     onChangeMake(make) {
       this.updateModal("make");
       navigateTo(`/city/${this.$route.params.city}/car/${make}`);
+    },
+    onChangePrice() {
+      this.updateModal("price");
+
+      if (this.priceRange.min && this.priceRange.max) {
+        if (this.priceRange.min > this.priceRange.max) {
+          return;
+        }
+      }
+
+      this.$router.push({
+        query: {
+          minPrice: this.priceRange.min,
+          maxPrice: this.priceRange.max,
+        },
+      });
     },
     updateModal(key) {
       this.modal[key] = !this.modal[key];
