@@ -13,16 +13,7 @@ export default {
     setHead() {
       definePageMeta({
         layout: "custom",
-        middleware: [
-          function (to, from) {
-            const user = useSupabaseUser();
-            if (user.value) {
-              return;
-            } else {
-              return navigateTo("/login");
-            }
-          },
-        ],
+        middleware: ["auth"],
       });
     },
   },
