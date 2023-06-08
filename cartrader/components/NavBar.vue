@@ -34,7 +34,7 @@ export default {
       this.user = null;
 
       const supabase = useSupabaseClient();
-      const { error } = supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
 
       try {
         await $fetch("/api/_supabase/session", {

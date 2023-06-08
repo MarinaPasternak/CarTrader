@@ -1,9 +1,4 @@
-<script setup>
-definePageMeta({
-  layout: "custom",
-});
-
-const { makes } = useCars();
+<!-- <script setup>
 
 const info = useState("adInfo", () => {
   return {
@@ -62,7 +57,7 @@ const inputs = [
     placeholder: "Leather Interior, No Accidents",
   },
 ];
-</script>
+</script> -->
 
 
 <template>
@@ -95,3 +90,35 @@ const inputs = [
     </div>
   </div>
 </template>
+
+<script>
+import { useMakes } from "~~/composables/useMake";
+export default {
+  computed: {
+    makes() {
+      const { makes } = useMakes();
+      return makes;
+    },
+  },
+  methods: {
+    setHead() {
+      definePageMeta({
+        layout: "custom",
+        middleware: [
+          function (to, from) {
+            const user = useSupabaseUser();
+            if (user.value) {
+              return;
+            } else {
+              return navigateTo("/login");
+            }
+          },
+        ],
+      });
+    },
+  },
+  created() {
+    this.setHead();
+  },
+};
+</script>
