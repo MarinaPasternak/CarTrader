@@ -55,11 +55,13 @@
           <input
             class="border p-1 rounded"
             type="number"
+            :class="{ 'border-red-500': priceError }"
             placeholder="Min"
             v-model="priceRange.min"
           />
           <input
             class="border p-1 rounded"
+            :class="{ 'border-red-500': priceError }"
             type="number"
             placeholder="Max"
             v-model="priceRange.max"
@@ -70,6 +72,7 @@
           >
             Apply
           </button>
+          <p class="text-red-500" v-if="priceError">{{ priceErrorMessage }}</p>
         </div>
       </div>
       <!--Price-->
@@ -91,6 +94,8 @@ export default {
         min: null,
         max: null,
       },
+      priceError: false,
+      priceErrorMessage: "",
       city: "",
     };
   },
@@ -136,11 +141,16 @@ export default {
       navigateTo(`/city/${this.$route.params.city}/car/${make}`);
     },
     onChangePrice() {
-      this.updateModal("price");
+      this.priceError = false;
+      this.priceErrorMessage = "";
 
       if (this.priceRange.min && this.priceRange.max) {
         if (this.priceRange.min > this.priceRange.max) {
+          this.priceError = true;
+          this.priceErrorMessage = "Invalid price range.";
           return;
+        } else {
+          this.updateModal("price");
         }
       }
 

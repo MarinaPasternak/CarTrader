@@ -55,8 +55,10 @@ export default {
         provider: "google",
       });
 
+      this.$toast.success("Successfully authenticated");
+
       if (error) {
-        console.log(error);
+        this.$toast.error("Error while authenticating");
       }
     },
   },
