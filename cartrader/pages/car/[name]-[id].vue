@@ -10,24 +10,13 @@
 <script>
 import NavBar from "../../components/NavBar.vue";
 import { useUtilities } from "~~/composables/useUtilities";
-import { useCars } from "~~/composables/useCars";
+import useFetchCar from "~~/composables/useFetchCar";
 export default {
   components: { NavBar },
-  computed: {
-    car() {
-      const { cars } = useCars();
-      const carID = parseInt(this.$route.params.id);
-
-      const foundedCar = cars.find((car) => {
-        return car.id === carID;
-      });
-
-      if (!foundedCar) {
-        this.throwError();
-      }
-
-      return foundedCar;
-    },
+  data() {
+    return {
+      car: null,
+    };
   },
   methods: {
     setHead() {
@@ -47,9 +36,14 @@ export default {
         message: `Car with id of ${this.$route.params.id} doesn't exist`,
       });
     },
+    async getCar() {
+      const { data: car } = await useFetchCar(this.$route.params.id);
+      this.car = car;
+    },
   },
   created() {
     this.setHead();
+    this.getCar();
   },
 };
 </script>
