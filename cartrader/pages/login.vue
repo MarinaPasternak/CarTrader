@@ -54,12 +54,6 @@ export default {
       const { error } = supabase.auth.signInWithOAuth({
         provider: "google",
       });
-
-      this.$toast.success("Successfully authenticated");
-
-      if (error) {
-        this.$toast.error("Error while authenticating");
-      }
     },
   },
   created() {
