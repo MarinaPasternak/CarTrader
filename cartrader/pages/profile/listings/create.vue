@@ -19,53 +19,15 @@ const onChangeInput = (data, name) => {
   info.value[name] = data;
 };
 
-const inputs = [
-  {
-    id: 1,
-    title: "Model *",
-    name: "model",
-    placeholder: "Civic",
-  },
-  {
-    id: 2,
-    title: "Year *",
-    name: "year",
-    placeholder: "2019",
-  },
-  {
-    id: 3,
-    title: "Miles *",
-    name: "miles",
-    placeholder: "10000",
-  },
-  {
-    id: 4,
-    title: "City *",
-    name: "city",
-    placeholder: "Austin",
-  },
-  {
-    id: 5,
-    title: "Number of Seats *",
-    name: "seats",
-    placeholder: "5",
-  },
-  {
-    id: 6,
-    title: "Features *",
-    name: "features",
-    placeholder: "Leather Interior, No Accidents",
-  },
-];
 </script> -->
 
 
 <template>
   <div>
     <div class="mt-24">
-      <h1 class="text-6xl">Create a New Listing</h1>
+      <h1 class="text-6xl text-blue-400">Create a New Listing</h1>
     </div>
-    <div class="shadow rounded p-3 mt-5 flex flex-wrap justify-between">
+    <div class="shadow rounded p-6 mt-5 flex flex-wrap justify-between">
       <CarAdSelect
         title="Make *"
         :options="makes"
@@ -86,7 +48,12 @@ const inputs = [
         placeholder=""
         @change-input="onChangeInput"
       />
-      <CarAdImage @change-input="onChangeInput" />
+      <CarAdImage @change-input="onChangeInput" class="mb-8" />
+      <div class="text-center w-full">
+        <button class="bg-blue-400 w-full mt-2 rounded text-white p-3">
+          Submit
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -94,6 +61,54 @@ const inputs = [
 <script>
 import { useMakes } from "~~/composables/useMake";
 export default {
+  data() {
+    return {
+      inputs: [
+        {
+          id: 1,
+          title: "Model *",
+          name: "model",
+          placeholder: "Civic",
+        },
+        {
+          id: 2,
+          title: "Year *",
+          name: "year",
+          placeholder: "2019",
+        },
+        {
+          id: 3,
+          title: "Price *",
+          name: "price",
+          placeholder: "$0.00",
+        },
+        {
+          id: 4,
+          title: "Miles *",
+          name: "miles",
+          placeholder: "10000",
+        },
+        {
+          id: 5,
+          title: "City *",
+          name: "city",
+          placeholder: "Austin",
+        },
+        {
+          id: 6,
+          title: "Number of Seats *",
+          name: "seats",
+          placeholder: "5",
+        },
+        {
+          id: 7,
+          title: "Features *",
+          name: "features",
+          placeholder: "Leather Interior, No Accidents",
+        },
+      ],
+    };
+  },
   computed: {
     makes() {
       const { makes } = useMakes();

@@ -34,7 +34,7 @@ const onImageUpload = (event) => {
             class="opacity-0 absolute cursor-pointer"
             @change="onImageUpload"
           />
-          <span class="cursor-pointer">Browser File</span>
+          <span class="border cursor-pointer p-2">Browser File</span>
         </div>
         <div class="border p-2 mt-3 w-56" v-if="image.preview">
           <img :src="image.preview" class="img-fluid" />
