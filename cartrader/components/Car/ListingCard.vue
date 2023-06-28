@@ -1,9 +1,3 @@
-<script setup>
-const props = defineProps({
-  listing: Object,
-});
-</script>
-
 <template>
   <div class="shadow rounded overflow-hidden flex justify-between mb-4">
     <div class="flex">
@@ -26,6 +20,14 @@ const props = defineProps({
 
 <script>
 export default {
-  props: ["listing"],
+  props: {
+    listing: {
+      type: Object,
+      required: true,
+    },
+  },
+  created() {
+    console.log(this.listing);
+  },
 };
 </script>

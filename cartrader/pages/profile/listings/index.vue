@@ -19,13 +19,11 @@
 </template>
 
 <script>
-import { useCars } from "~~/composables/useCars";
 export default {
-  computed: {
-    listings() {
-      const { listings } = useCars();
-      return listings;
-    },
+  data() {
+    return {
+      listings: [],
+    };
   },
   methods: {
     setHead() {
@@ -34,9 +32,22 @@ export default {
         middleware: ["auth"],
       });
     },
+    async fetchListings() {
+      try {
+        const user = useSupabaseUser();
+        const userId = user.id;
+        const response = await fetch(`/api/car/listings/user/${userId}`);
+        const data = await response.json();
+        this.listings = data;
+      } catch (error) {
+        console.log(error);
+        this.listings = [];
+      }
+    },
   },
   created() {
     this.setHead();
+    this.fetchListings();
   },
 };
 </script>
