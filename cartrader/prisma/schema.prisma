@@ -22,7 +22,7 @@ model Car {
   city          String
   model         String
   make          String
-  listingId     String
+  listerId      String
   messages      Message[]
 }
 

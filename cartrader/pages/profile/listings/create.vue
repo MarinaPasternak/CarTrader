@@ -1,27 +1,3 @@
-<!-- <script setup>
-
-const info = useState("adInfo", () => {
-  return {
-    make: "",
-    model: "",
-    year: "",
-    miles: "",
-    price: "",
-    city: "",
-    seats: "",
-    features: "",
-    description: "",
-    image: null,
-  };
-});
-
-const onChangeInput = (data, name) => {
-  info.value[name] = data;
-};
-
-</script> -->
-
-
 <template>
   <div>
     <div class="mt-24">
@@ -50,9 +26,14 @@ const onChangeInput = (data, name) => {
       />
       <CarAdImage @change-input="onChangeInput" class="mb-8" />
       <div class="text-center w-full">
-        <button class="bg-blue-400 w-full mt-2 rounded text-white p-3">
+        <button
+          :disabled="isButtonDisabled"
+          @click="handleSubmit"
+          class="bg-blue-400 w-full mt-2 rounded text-white p-3"
+        >
           Submit
         </button>
+        <p class="mt-3 text-red-400" v-if="error">{{ error }}</p>
       </div>
     </div>
   </div>
@@ -63,6 +44,8 @@ import { useMakes } from "~~/composables/useMake";
 export default {
   data() {
     return {
+      user: null,
+      error: null,
       inputs: [
         {
           id: 1,
@@ -107,6 +90,18 @@ export default {
           placeholder: "Leather Interior, No Accidents",
         },
       ],
+      info: {
+        make: "",
+        model: "",
+        year: "",
+        miles: "",
+        price: "",
+        city: "",
+        seats: "",
+        features: "",
+        description: "",
+        image: "text",
+      },
     };
   },
   computed: {
@@ -114,17 +109,56 @@ export default {
       const { makes } = useMakes();
       return makes;
     },
+    isButtonDisabled() {
+      for (let key in this.info) {
+        if (!this.info[key]) return true;
+      }
+
+      return false;
+    },
   },
   methods: {
+    getUser() {
+      this.user = useSupabaseUser();
+    },
     setHead() {
       definePageMeta({
         layout: "custom",
         middleware: ["auth"],
       });
     },
+    onChangeInput(data, name) {
+      this.info[name] = data;
+    },
+    async handleSubmit() {
+      const body = {
+        ...this.info,
+        features: this.info.features.split(", "),
+        numberOfSeats: parseInt(this.info.seats),
+        miles: parseInt(this.info.miles),
+        price: parseInt(this.info.price),
+        year: parseInt(this.info.year),
+        name: `${this.info.make} ${this.info.model}`,
+        listerId: this.user.id,
+      };
+
+      delete body.seats;
+
+      try {
+        const response = await $fetch("/api/car/listings", {
+          method: "post",
+          body,
+        });
+        this.error = null;
+        navigateTo("/profile/listings");
+      } catch (error) {
+        this.error = "An error occurred. Please try again.";
+      }
+    },
   },
   created() {
     this.setHead();
+    this.getUser();
   },
 };
 </script>

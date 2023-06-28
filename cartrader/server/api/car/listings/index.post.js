@@ -17,6 +17,7 @@ const schema = Joi.object({
   image: Joi.string().required(),
   price: Joi.number().min(0).required(),
   name: Joi.string().required(),
+  listerId: Joi.string().required()
 });
 
 export default defineEventHandler(async (event) => {
