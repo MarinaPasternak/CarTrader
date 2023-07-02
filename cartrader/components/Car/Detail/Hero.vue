@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-10">
-      <NuxtImg :src="car.image" class="w-full" :alt="car.name" />
+      <NuxtImg :src="imageURL" class="w-full" :alt="car.name" />
       <h1 class="mt-10 text-4xl">{{ car.name }}</h1>
       <div
         class="text-slate-500 flex text-lg mt-3 border-b pb-5 justify-between"
@@ -22,6 +22,11 @@
 <script>
 export default {
   props: ["car"],
+  computed: {
+    imageURL() {
+      return `https://wcawhpkxzhesddyoafuk.supabase.co/storage/v1/object/public/images/${this.car.image}`;
+    },
+  },
 };
 </script>
 

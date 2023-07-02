@@ -100,7 +100,7 @@ export default {
         seats: "",
         features: "",
         description: "",
-        image: "text",
+        image: "",
       },
     };
   },
@@ -131,6 +131,13 @@ export default {
       this.info[name] = data;
     },
     async handleSubmit() {
+      const supabase = useSupabaseClient();
+      const fileName = Math.floor(Math.random() * 1000000000);
+      
+      const { data, error } = await supabase.storage
+        .from("images")
+        .upload("public/" + fileName, this.info.image);
+
       const body = {
         ...this.info,
         features: this.info.features.split(", "),
@@ -140,6 +147,7 @@ export default {
         year: parseInt(this.info.year),
         name: `${this.info.make} ${this.info.model}`,
         listerId: this.user.id,
+        image: data.path,
       };
 
       delete body.seats;
@@ -153,6 +161,7 @@ export default {
         navigateTo("/profile/listings");
       } catch (error) {
         this.error = "An error occurred. Please try again.";
+        await supabase.storage.from("images").remove(data.path);
       }
     },
   },

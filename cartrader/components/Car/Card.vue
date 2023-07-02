@@ -8,7 +8,7 @@
       @click="addToFavorite()"
     />
     <div class="flex h-full" @click="navigateTo(`/car/${car.name}-${car.id}`)">
-      <NuxtImg :src="car.image" alt="car.name" class="w-[300px] h-full" />
+      <NuxtImg :src="imageURL" alt="car.name" class="w-[300px] h-full" />
       <div class="p-4 flex flex-col">
         <div>
           <h1 class="text-2xl text-blue-700">{{ car.name }}</h1>
@@ -33,6 +33,11 @@ export default {
       heartFilled,
       favored: false,
     };
+  },
+  computed: {
+    imageURL() {
+      return `https://wcawhpkxzhesddyoafuk.supabase.co/storage/v1/object/public/images/${this.car.image}`;
+    },
   },
   methods: {
     addToFavorite() {
