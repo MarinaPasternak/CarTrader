@@ -13,6 +13,7 @@
         v-for="listing in listings"
         :key="listing.id"
         :listing="listing"
+        @handleDelete="deleteItem"
       />
     </div>
   </div>
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       listings: [],
+      user: null,
     };
   },
   methods: {
@@ -32,11 +34,12 @@ export default {
         middleware: ["auth"],
       });
     },
+    getUser() {
+      this.user = useSupabaseUser();
+    },
     async fetchListings() {
       try {
-        const user = useSupabaseUser();
-        const userId = user.id;
-        const response = await fetch(`/api/car/listings/user/${userId}`);
+        const response = await fetch(`/api/car/listings/user/${this.user.id}`);
         const data = await response.json();
         this.listings = data;
       } catch (error) {
@@ -44,9 +47,19 @@ export default {
         this.listings = [];
       }
     },
+    async deleteItem(listingId) {
+      await $fetch(`/api/car/listings/${listingId}`, {
+        method: "delete",
+      });
+
+      this.listings = this.listings.filter(
+        (listing) => listing.id !== listingId
+      );
+    },
   },
   created() {
     this.setHead();
+    this.getUser();
     this.fetchListings();
   },
 };

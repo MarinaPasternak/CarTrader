@@ -13,7 +13,9 @@
         :to="`/profile/listings/view/${listing.id}`"
         >View</NuxtLink
       >
-      <p class="text-red-400 cursor-pointer">Delete</p>
+      <p class="text-red-400 cursor-pointer" @click="handleDeleteClick">
+        Delete
+      </p>
     </div>
   </div>
 </template>
@@ -26,8 +28,10 @@ export default {
       required: true,
     },
   },
-  created() {
-    console.log(this.listing);
+  methods: {
+    handleDeleteClick() {
+      this.$emit("handleDelete", this.listing.id);
+    },
   },
 };
 </script>
